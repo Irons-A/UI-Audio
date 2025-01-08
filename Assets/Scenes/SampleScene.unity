@@ -1359,11 +1359,8 @@ MonoBehaviour:
   _masterVolumeSlider: {fileID: 1229182752}
   _soundVolumeSlider: {fileID: 589977091}
   _musicVolumeSlider: {fileID: 2084735688}
-  _soundToggle: {fileID: 2031421953}
+  _audioToggle: {fileID: 2031421953}
   _masterVolume: 0
-  _soundVolume: 0
-  _musicVolume: 0
-  _isSoundEnabled: 1
 --- !u!4 &768516805
 Transform:
   m_ObjectHideFlags: 0
@@ -2523,7 +2520,7 @@ GameObject:
   - component: {fileID: 2031421952}
   - component: {fileID: 2031421953}
   m_Layer: 5
-  m_Name: Toggle Sounds
+  m_Name: Toggle Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

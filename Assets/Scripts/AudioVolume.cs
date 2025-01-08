@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -8,53 +7,51 @@ public class AudioVolume : MonoBehaviour
     public const string MasterVolume = "MasterVolume";
     public const string MusicVolume = "MusicVolume";
     public const string SoundVolume = "SoundVolume";
+    public const float MinVolume = 0.001f;
+    public const int FormulaMultiplier = 20;
 
     [SerializeField] private AudioMixerGroup _audioMixer;
 
     [SerializeField] private Slider _masterVolumeSlider;
     [SerializeField] private Slider _soundVolumeSlider;
     [SerializeField] private Slider _musicVolumeSlider;
-    [SerializeField] private Toggle _soundToggle;
+    [SerializeField] private Toggle _audioToggle;
 
     [SerializeField] private float _masterVolume;
-    [SerializeField] private float _soundVolume;
-    [SerializeField] private float _musicVolume;
-    [SerializeField] private bool _isSoundEnabled = true;
-
-    private float _minVolume = 0.0001f;
 
     private void Awake()
     {
-        _soundToggle.onValueChanged.AddListener(ToggleSound);
+        _audioToggle.onValueChanged.AddListener(ToggleAudio);
+        _masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        _soundVolumeSlider.onValueChanged.AddListener(SetSoundVolume);
+        _musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
     }
 
-    public void SetMasterVolume()
+    public void SetMasterVolume(float value)
     {
-        _masterVolume = _masterVolumeSlider.value;
-        _audioMixer.audioMixer.SetFloat(MasterVolume, Mathf.Log10(_masterVolume)*20);
+        _masterVolume = value;
+        _audioMixer.audioMixer.SetFloat(MasterVolume, Mathf.Log10(value) * FormulaMultiplier);
     }
 
-    public void SetSoundVolume()
+    public void SetSoundVolume(float value)
     {
-        _soundVolume = _soundVolumeSlider.value;
-        _audioMixer.audioMixer.SetFloat(SoundVolume, Mathf.Log10(_soundVolume) * 20);
+        _audioMixer.audioMixer.SetFloat(SoundVolume, Mathf.Log10(value) * FormulaMultiplier);
     }
 
-    public void SetMusicVolume()
+    public void SetMusicVolume(float value)
     {
-        _musicVolume = _musicVolumeSlider.value;
-        _audioMixer.audioMixer.SetFloat(MusicVolume, Mathf.Log10(_musicVolume) * 20);
+        _audioMixer.audioMixer.SetFloat(MusicVolume, Mathf.Log10(value) * FormulaMultiplier);
     }
 
-    public void ToggleSound(bool value)
+    public void ToggleAudio(bool value)
     {
         if (value)
         {
-            _audioMixer.audioMixer.SetFloat(SoundVolume, Mathf.Log10(_soundVolume) * 20);
+            _audioMixer.audioMixer.SetFloat(MasterVolume, Mathf.Log10(_masterVolume) * FormulaMultiplier);
         }
         else
         {
-            _audioMixer.audioMixer.SetFloat(SoundVolume, Mathf.Log10(_minVolume) * 20);
+            _audioMixer.audioMixer.SetFloat(MasterVolume, Mathf.Log10(MinVolume) * FormulaMultiplier);
         }
     }
 }
